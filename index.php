@@ -20,17 +20,8 @@ $uri = str_replace($junk, '', $_SERVER['REQUEST_URI']);
 $uriInfo = explode('/', $uri);
 
 $controllerName = array_shift($uriInfo);
-$fullControllerName = 'Controllers\\' . ucfirst($controllerName) . 'Controller';
+
 $methodName = array_shift($uriInfo);
 
-if (!class_exists($fullControllerName) || !method_exists($fullControllerName, $methodName)) {
-    if (!$router->invoke($uri, $_SERVER['REQUEST_METHOD'])) {
-        http_response_code(404);
-        echo "<h1> 404 Not Found </h1>";
-    }
-    exit;
-}
-
-$controllerInstance = new $fullControllerName();
-
-call_user_func_array([$controllerInstance, $methodName], $uriInfo);
+$app = new \Core\Application($controllerName,$methodName,$uriInfo,$router,$uri, $_SERVER);
+$app->start();
