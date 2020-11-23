@@ -23,5 +23,6 @@ $controllerName = array_shift($uriInfo);
 
 $methodName = array_shift($uriInfo);
 
-$app = new \Core\Application($controllerName,$methodName,$uriInfo,$router,$uri, $_SERVER);
+$mvcContext = new \Core\MvcContext($controllerName,$methodName,$uriInfo);
+$app = new \Core\Application($mvcContext, $router, $uri, $_SERVER);
 $app->start();

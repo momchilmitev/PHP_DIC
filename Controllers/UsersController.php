@@ -2,6 +2,8 @@
 
 namespace Controllers;
 
+use ViewEngine\ViewInterface;
+
 class UsersController
 {
     public function register()
@@ -9,9 +11,9 @@ class UsersController
         echo "this is register method";
     }
 
-    public function login()
+    public function login(int $id, string $name, ViewInterface $view)
     {
-        echo "this is login method";
+        $view->render();
     }
 
     public function profile()

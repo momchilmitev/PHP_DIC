@@ -6,23 +6,17 @@ use Routing\RouterInterface;
 
 class Application
 {
-  private $controllerName;
-
-  private $actionName;
-
-  private array $params = [];
+  private MvcContextInterface $mvcContext;
 
   private RouterInterface $router;
 
-  private $uri;
+  private string $uri;
 
-  private $serverInfo;
+  private array $serverInfo;
 
-  public function __construct($controllerName, $actionName, array $params, RouterInterface $router, $uri, $serverInfo)
+  public function __construct(MvcContextInterface $mvcContext, RouterInterface $router, $uri, $serverInfo)
   {
-    $this->controllerName = $controllerName;
-    $this->actionName = $actionName;
-    $this->params = $params;
+    $this->mvcContext = $mvcContext;
     $this->router = $router;
     $this->uri = $uri;
     $this->serverInfo = $serverInfo;
@@ -30,9 +24,9 @@ class Application
 
   public function start()
   {
-      $fullControllerName = 'Controllers\\' . ucfirst($this->controllerName) . 'Controller';
+      $fullControllerName = 'Controllers\\' . ucfirst($this->mvcContext->getControllerName()) . 'Controller';
 
-      if (!class_exists($fullControllerName) || !method_exists($fullControllerName, $this->actionName)) {
+      if (!class_exists($fullControllerName) || !method_exists($fullControllerName, $this->mvcContext->getActionName())) {
           if (!$this->router->invoke($this->uri, $this->serverInfo['REQUEST_METHOD'])) {
               http_response_code(404);
               echo "<h1> 404 Not Found </h1>";
@@ -42,6 +36,6 @@ class Application
 
       $controllerInstance = new $fullControllerName();
 
-      call_user_func_array([$controllerInstance, $this->actionName], $this->params);
+      call_user_func_array([$controllerInstance, $this->mvcContext->getActionName()], $this->mvcContext->getParams());
   }
 }
