@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use DTO\ViewModels\UserLoginViewModel;
 use ViewEngine\ViewInterface;
 
 class UsersController
@@ -13,7 +14,8 @@ class UsersController
 
     public function login(int $id, string $name, ViewInterface $view)
     {
-        $view->render();
+        $viewModel = new UserLoginViewModel($id, $name);
+        $view->render($viewModel);
     }
 
     public function profile()
