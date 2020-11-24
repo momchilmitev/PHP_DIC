@@ -25,4 +25,8 @@ $methodName = array_shift($uriInfo);
 
 $mvcContext = new \Core\MvcContext($controllerName,$methodName,$uriInfo);
 $app = new \Core\Application($mvcContext, $router, $uri, $_SERVER);
+$app->registerDependency(
+    \ViewEngine\ViewInterface::class,
+    \ViewEngine\View::class
+);
 $app->start();

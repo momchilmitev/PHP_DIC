@@ -8,7 +8,7 @@ use Core\MvcContextInterface;
 
 class View implements ViewInterface
 {
-    const VIEW_FOLDER = '/views/';
+    const VIEW_FOLDER = 'views/';
 
     const VIEW_EXTENSION = '.php';
 
